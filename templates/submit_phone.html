@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masukkan Nama dan NIK</title>
+</head>
+<body>
+    <h1>Masukkan Nama dan NIK</h1>
+    <form action="/submit_phone" method="POST">
+        <!-- Kolom untuk Nama -->
+        <label for="name">Nama:</label>
+        <input type="text" name="name" id="name" placeholder="Nama Lengkap" required><br><br>
+        
+        <!-- Kolom untuk NIK -->
+        <label for="nik">NIK:</label>
+        <input type="text" name="nik" id="nik" placeholder="Nomor Induk Kependudukan" required><br><br>
+        
+        <!-- Tombol submit -->
+        <button type="submit">Kirim</button>
+    </form>
+</body>
+</html>
