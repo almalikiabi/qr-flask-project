@@ -4,7 +4,7 @@ import csv
 app = Flask(__name__)
 
 # PIN yang valid
-VALID_PIN = "Metro1470"
+VALID_PIN = "MetroTel247"
 
 # URL ke file (misalnya link Google Drive atau URL file lain)
 FILE_LINK = "https://docs.google.com/spreadsheets/d/1InhCZCr26RqOKR9l45PRXEPpFWmT29P5/edit?usp=sharing&ouid=113193728529755822035&rtpof=true&sd=true"  # Gantilah dengan link Anda
