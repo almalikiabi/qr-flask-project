@@ -1,11 +1,13 @@
 from flask import Flask, request, render_template, redirect, url_for
-import qrcode
 import csv
 
 app = Flask(__name__)
 
 # PIN yang valid
 VALID_PIN = "1234"
+
+# URL ke file (misalnya link Google Drive atau URL file lain)
+FILE_LINK = "https://docs.google.com/spreadsheets/d/1InhCZCr26RqOKR9l45PRXEPpFWmT29P5/edit?usp=sharing&ouid=113193728529755822035&rtpof=true&sd=true"  # Gantilah dengan link Anda
 
 # Fungsi untuk memeriksa apakah NIK dan Nama terdaftar
 def is_valid_employee(nik, name):
@@ -19,46 +21,22 @@ def is_valid_employee(nik, name):
         print("File karyawan.csv tidak ditemukan.")
     return False
 
-# Halaman pertama (QR Code)
 @app.route("/")
 def home():
-    # URL yang ingin di-encode ke dalam QR Code
-    url = "http://127.0.0.1:5000/verify"  # Sesuaikan URL lokal/hosting
-    
-    # Buat QR code dan simpan di folder static
-    qr = qrcode.make(url)
-    qr.save("static/qrcode.png")  # Menyimpan QR code sebagai qrcode.png di folder static
-    
-    # Tampilkan halaman index.html yang berisi QR code
-    return render_template("index.html")
+    url = "https://qr-flask-project-production.up.railway.app"  # Sesuaikan dengan URL aplikasi Anda
+    return render_template("index.html", url=url)
 
-# Halaman untuk memasukkan PIN setelah memindai QR
 @app.route("/verify", methods=["GET", "POST"])
 def verify():
     if request.method == "POST":
         pin = request.form["pin"]
         if pin == VALID_PIN:
-            return redirect(url_for('submit_employee'))  # Arahkan ke halaman untuk memasukkan data karyawan
+            return redirect(url_for('submit_nik'))  # Arahkan ke halaman untuk memasukkan NIK
         else:
             return "PIN salah, coba lagi!"
-    
-    # Tampilkan form untuk memasukkan PIN
+
     return render_template("verify_pin.html")
 
-# Halaman untuk memeriksa validitas data karyawan
-@app.route("/submit_employee", methods=["GET", "POST"])
-def submit_employee():
-    if request.method == "POST":
-        name = request.form["name"]
-        nik = request.form["nik"]
-        
-        # Periksa apakah data karyawan valid
-        if is_valid_employee(nik, name):
-            return f"Selamat datang, {name} (NIK: {nik}). Anda berhasil mengakses QR!"
-        else:
-            return "Data Anda tidak valid. Hubungi HR untuk informasi lebih lanjut."
-    
-    # Tampilkan form untuk memasukkan data karyawan
 @app.route("/submit_nik", methods=["GET", "POST"])
 def submit_nik():
     error = None
@@ -82,7 +60,11 @@ def submit_nik():
         if not valid:
             error = "NIK tidak terdaftar. Silakan coba lagi."
 
+    if valid:
+        # Arahkan pengguna ke link setelah NIK dan PIN valid
+        return redirect(FILE_LINK)  # Arahkan ke file/link setelah verifikasi
+
     return render_template("submit_nik.html", error=error, valid=valid, name=name, nik=nik)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=8080)

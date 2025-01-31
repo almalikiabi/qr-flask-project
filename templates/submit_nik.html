@@ -1,27 +1,19 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validasi NIK</title>
-</head>
-<body>
-    {% if error %}
-        <h3 style="color: red;">{{ error }}</h3>
-    {% endif %}
-    {% if valid %}
-        <h2>Nama: {{ name }}</h2>
-        <h2>NIK: {{ nik }}</h2>
-        <p>[berhasil di submit, silahkan tunggu]</p>
-    {% else %}
-        <h1>Masukkan Nama dan NIK</h1>
-        <form action="/submit_nik" method="post">
-            <label for="name">Nama:</label>
-            <input type="text" id="name" name="name" placeholder="Nama Anda" required><br>
-            <label for="nik">NIK:</label>
-            <input type="text" id="nik" name="nik" placeholder="NIK Anda" required><br>
-            <button type="submit">Submit</button>
-        </form>
-    {% endif %}
-</body>
-</html>
+<form method="post">
+    <label for="name">Nama:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="nik">NIK:</label>
+    <input type="text" id="nik" name="nik" required>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+{% if valid %}
+    <p>Nama: {{ name }}</p>
+    <p>NIK: {{ nik }}</p>
+    <p>Berhasil terdaftar!</p>
+{% endif %}
